@@ -1,5 +1,6 @@
 package entity;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ public class ReportsData {
                 new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         reportList = new ArrayList<Report>();
         try {
-            reportList.add(new Report(1, formatDate.parse("2015-02-14"), "Ivanov", "Read"));
-            reportList.add(new Report(2, formatDate.parse("2014-03-15"), "Sidorov", "Write"));
-            reportList.add(new Report(3, formatDate.parse("2015-03-23"), "Petrov", "Read"));
-            reportList.add(new Report(4, formatDate.parse("2014-06-02"), "Ivanov", "Write"));
-            reportList.add(new Report(5, formatDate.parse("2014-06-15"), "Ivanov", "Read"));
-            reportList.add(new Report(6, formatDate.parse("2014-11-01"), "Sidorov", "Read"));
+            reportList.add(new Report(1, new Date(formatDate.parse("2015-02-14").getTime()), "Ivanov", "Read"));
+            reportList.add(new Report(2, new Date(formatDate.parse("2014-03-15").getTime()), "Sidorov", "Write"));
+            reportList.add(new Report(3, new Date(formatDate.parse("2015-03-23").getTime()), "Petrov", "Read"));
+            reportList.add(new Report(4, new Date(formatDate.parse("2014-06-02").getTime()), "Ivanov", "Write"));
+            reportList.add(new Report(5, new Date(formatDate.parse("2014-06-15").getTime()), "Ivanov", "Read"));
+            reportList.add(new Report(6, new Date(formatDate.parse("2014-11-01").getTime()), "Sidorov", "Read"));
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -184,7 +184,7 @@ public class DaoController extends DependencyInjectionServlet {
             try {
                 endDate = formatOut.format(formatIn.parse(request.getParameter("endDate")));
             } catch (ParseException e) {
-                endDate = formatOut.format(new Date());
+                endDate = formatOut.format(new Date(new java.util.Date().getTime()));
             }
         }
 
