@@ -38,7 +38,7 @@ public class MySqlReportDao implements ReportDao {
         Set<String> set = null;
         try {
             session = sessionFactory.openSession();
-            List<String> list = session.createSQLQuery("SELECT Performer FROM reports.reports").addEntity(Report.class).list();
+            List<String> list = session.createSQLQuery("SELECT Performer FROM reports.reports").list();
             set = new HashSet<String>(list);
         } catch (Exception e) {
             e.printStackTrace();
