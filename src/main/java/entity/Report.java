@@ -1,14 +1,22 @@
 package entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.Locale;
 
+@Entity
+@Table(name="reports")
 public class Report {
     private int id;
     private Date creatingDate;
     private String performer;
     private String activity;
+
+    public Report() {
+    }
 
     public Report(int id, Date creatingDate, String performer, String activity) {
         this.id = id;
@@ -17,6 +25,10 @@ public class Report {
         this.activity = activity;
     }
 
+    @Id
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
+    @Column(name="ID")
     public int getId() {
         return id;
     }
@@ -25,6 +37,7 @@ public class Report {
         this.id = id;
     }
 
+    @Column(name="CreatingDate")
     public Date getCreatingDate() {
         return creatingDate;
     }
@@ -33,6 +46,7 @@ public class Report {
         this.creatingDate = creatingDate;
     }
 
+    @Column(name="Performer")
     public String getPerformer() {
         return performer;
     }
@@ -41,6 +55,7 @@ public class Report {
         this.performer = performer;
     }
 
+    @Column(name="Activity")
     public String getActivity() {
         return activity;
     }

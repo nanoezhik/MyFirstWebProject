@@ -1,5 +1,7 @@
 package dao;
 
+import org.hibernate.SessionFactory;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -7,7 +9,7 @@ import java.sql.SQLException;
  * Created by Администратор on 23.03.2015.
  */
 public interface DaoFactory {
-    public Connection getConnection() throws SQLException;
+//    public Connection getConnection() throws SQLException;
 
-    public ReportDao getReportDao(Connection connection);
+    public ReportDao getReportDao();
 }

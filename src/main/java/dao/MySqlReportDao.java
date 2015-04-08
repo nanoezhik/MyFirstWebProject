@@ -1,8 +1,11 @@
 package dao;
 
 import entity.Report;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import java.sql.Connection;
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +15,10 @@ import java.util.List;
 import java.util.Set;
 
 public class MySqlReportDao implements ReportDao {
-    private final Connection connection;
+    private final SessionFactory sessionFactory;
 
-    public MySqlReportDao(Connection connection) {
-        this.connection = connection;
+    public MySqlReportDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public Report create() {
@@ -31,58 +34,68 @@ public class MySqlReportDao implements ReportDao {
     }
 
     public Set<String> getListAllPerformers() throws SQLException {
-        String sql = "SELECT Performer FROM reports.reports;";
-        PreparedStatement stm = connection.prepareStatement(sql);
-        ResultSet rs = stm.executeQuery();
-        Set<String> set = new HashSet<String>();
-        while (rs.next()) {
-            String s = rs.getString("Performer");
-            set.add(s);
+        Session session = null;
+        Set<String> set = null;
+        try {
+            session = sessionFactory.openSession();
+            List<String> list = session.createSQLQuery("SELECT Performer FROM reports.reports").addEntity(Report.class).list();
+            set = new HashSet<String>(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return set;
     }
 
     public List<Report> getByPeriod(String startDate, String endDate) throws SQLException {
-        String sql = "SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ?;";
-        PreparedStatement stm = connection.prepareStatement(sql);
-
-        stm.setString(1, startDate);
-        stm.setString(2, endDate);
-
-        ResultSet rs = stm.executeQuery();
+        Session session = null;
         List<Report> list = new ArrayList<Report>();
-        while (rs.next()) {
-            Report r = new Report(rs.getInt("ID"), rs.getDate("CreatingDate"), rs.getString("Performer"), rs.getString("Activity"));
-            list.add(r);
+        try {
+            session = sessionFactory.openSession();
+            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ?").addEntity(Report.class);
+            list = query.setString(1, startDate).setString(2, endDate).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return list;
     }
 
     public List<Report> getByPeriodAndPerformer(String startDate, String endDate, String performer) throws SQLException {
-        String sql = "SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ? AND Performer = ?;";
-        PreparedStatement stm = connection.prepareStatement(sql);
-
-        stm.setString(1, startDate);
-        stm.setString(2, endDate);
-        stm.setString(3, performer);
-
-        ResultSet rs = stm.executeQuery();
+        Session session = null;
         List<Report> list = new ArrayList<Report>();
-        while (rs.next()) {
-            Report r = new Report(rs.getInt("ID"), rs.getDate("CreatingDate"), rs.getString("Performer"), rs.getString("Activity"));
-            list.add(r);
+        try {
+            session = sessionFactory.openSession();
+            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ? AND Performer = ?").addEntity(Report.class);
+            list = query.setString(1, startDate).setString(2, endDate).setString(3, performer).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return list;
     }
 
     public List<Report> getAll() throws SQLException {
-        String sql = "SELECT * FROM reports.reports;";
-        PreparedStatement stm = connection.prepareStatement(sql);
-        ResultSet rs = stm.executeQuery();
+        Session session = null;
         List<Report> list = new ArrayList<Report>();
-        while (rs.next()) {
-            Report r = new Report(rs.getInt("ID"), rs.getDate("CreatingDate"), rs.getString("Performer"), rs.getString("Activity"));
-            list.add(r);
+        try {
+            session = sessionFactory.openSession();
+            list = session.createSQLQuery("SELECT * FROM reports.reports").addEntity(Report.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
         return list;
     }

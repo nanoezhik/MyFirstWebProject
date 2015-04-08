@@ -1,7 +1,6 @@
 package controller;
 
 import dao.DaoFactory;
-import dao.JavaDaoFactory;
 import dao.ReportDao;
 import entity.Report;
 import inject.DependencyInjectionServlet;
@@ -10,7 +9,6 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -36,12 +34,10 @@ public class DaoController extends DependencyInjectionServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Connection con = null;
         List<Report> reportList = null;
         getParameterFromPage(request);
         try {
-            con = daoFactory.getConnection();
-            ReportDao rep = daoFactory.getReportDao(con);
+            ReportDao rep = daoFactory.getReportDao();
             LOGGER.info("Successful connection to DAO '" + rep.getClass().getSimpleName() + "'");
             if (allPerformers) {
                 reportList = rep.getByPeriod(startDate, endDate);
@@ -63,12 +59,10 @@ public class DaoController extends DependencyInjectionServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Connection con = null;
         Set<String> performerSet = null;
 
         try {
-            con = daoFactory.getConnection();
-            ReportDao rep = daoFactory.getReportDao(con);
+            ReportDao rep = daoFactory.getReportDao();
             LOGGER.info("Successful connection to DAO '" + rep.getClass().getSimpleName() + "'");
             performerSet = rep.getListAllPerformers();
         } catch (SQLException e) {
