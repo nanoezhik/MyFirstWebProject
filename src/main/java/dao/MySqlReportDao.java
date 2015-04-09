@@ -5,9 +5,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import javax.swing.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +35,7 @@ public class MySqlReportDao implements ReportDao {
         Set<String> set = null;
         try {
             session = sessionFactory.openSession();
-            List<String> list = session.createSQLQuery("SELECT Performer FROM reports.reports").list();
+            List<String> list = session.createSQLQuery("SELECT Performer FROM reports.reports;").list();
             set = new HashSet<String>(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,8 +52,8 @@ public class MySqlReportDao implements ReportDao {
         List<Report> list = new ArrayList<Report>();
         try {
             session = sessionFactory.openSession();
-            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ?").addEntity(Report.class);
-            list = query.setString(1, startDate).setString(2, endDate).list();
+            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ?;").addEntity(Report.class);
+            list = query.setString(0, startDate).setString(1, endDate).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -72,8 +69,8 @@ public class MySqlReportDao implements ReportDao {
         List<Report> list = new ArrayList<Report>();
         try {
             session = sessionFactory.openSession();
-            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ? AND Performer = ?").addEntity(Report.class);
-            list = query.setString(1, startDate).setString(2, endDate).setString(3, performer).list();
+            Query query = session.createSQLQuery("SELECT * FROM reports.reports WHERE CreatingDate >= ? AND CreatingDate <= ? AND Performer = ?;").addEntity(Report.class);
+            list = query.setString(0, startDate).setString(1, endDate).setString(2, performer).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -89,7 +86,7 @@ public class MySqlReportDao implements ReportDao {
         List<Report> list = new ArrayList<Report>();
         try {
             session = sessionFactory.openSession();
-            list = session.createSQLQuery("SELECT * FROM reports.reports").addEntity(Report.class).list();
+            list = session.createSQLQuery("SELECT * FROM reports.reports;").addEntity(Report.class).list();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

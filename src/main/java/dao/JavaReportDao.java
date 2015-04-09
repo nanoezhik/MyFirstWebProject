@@ -8,9 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by Администратор on 30.03.2015.
- */
 public class JavaReportDao implements ReportDao {
     private ReportsData reportsData;
 
